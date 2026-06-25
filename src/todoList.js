@@ -1,3 +1,5 @@
+import { createToDoItem } from "./todo.js";
+
 // работа по конкретному списку задач
 export function createToDoList() {
     const todos = [];
@@ -8,7 +10,8 @@ export function createToDoList() {
 
     return {
         // свойства позже (YAGNI)
-        addTodo(newTodo) {
+        addTodo(title) {
+            const newTodo = createToDoItem(title);
             todos.push(newTodo);
         },
 

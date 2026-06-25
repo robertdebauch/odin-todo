@@ -1,36 +1,35 @@
 import "./style.css";
-import { createToDoItem } from "./todo.js";
-import { createToDoList } from "./todoList.js";
+import { createApp } from "./app.js";
 
-// создаём массив, который будем заполнять объектами todo
-const myGlobalTodoList = createToDoList();
+// создаём конкретно приложение
+const todoApp = createApp();
 
-// создание тестовых задач
-const task_1 = createToDoItem("Learn how to use Closures in JS");
-const task_2 = createToDoItem("Create the Third Task");
-const task_3 = createToDoItem("Create the Fourth Task");
-const task_4 = createToDoItem("That's enough!");
+// создаём список
+todoApp.createList('Список дел');
 
-// добавление тестовых задач в тестовый список
-myGlobalTodoList.addTodo(task_1);
-myGlobalTodoList.addTodo(task_2);
-myGlobalTodoList.addTodo(task_3);
-myGlobalTodoList.addTodo(task_4);
+// тест с переменной для хранения
+const currentTasksList = todoApp.getList('Список дел'); // дословная проверка
 
-// проверяем работу конкретных задач
-console.log(task_1.checkStatus());
-task_1.toggleStatus();
-console.log(task_1.checkStatus());
-console.log(task_1.id);
+// пока хард-код проверка
+if (currentTasksList) {
+    currentTasksList.addTodo('Создать модули');
+    currentTasksList.addTodo('Настроить логистику');
+    currentTasksList.addTodo('Не застрять в рекурсии');
 
-// проверяем как удаляется
-console.log(myGlobalTodoList.getTodos());
-myGlobalTodoList.removeTodo(task_4.id);
-console.log(myGlobalTodoList.getTodos());
+    let currentTasks = currentTasksList.getTodos();
+    console.log('1 : Добавили:', currentTasks);
 
-// проверяем переключение
-console.log(task_2.checkStatus());
-myGlobalTodoList.toggleTodo(task_2.id);
-console.log(task_2.checkStatus());
-myGlobalTodoList.toggleTodo(task_2.id);
-console.log(task_2.checkStatus());
+    const currentTaskId = currentTasks[0].id; // чтобы сохранить id для теста
+
+    // меняем статус выполнения (тест опять же)
+    console.log('2 : Статус до смены: ', currentTasks[0].checkStatus());
+    currentTasksList.toggleTodo(currentTaskId);
+    console.log('3 : Статус ПОСЛЕ смены: ', currentTasks[0].checkStatus());
+
+    // удаляем в тестовом режиме
+    currentTasksList.removeTodo(currentTaskId);
+    console.log('4 : Удаляем и ожидаем 2 дела вместо 3: ', currentTasksList.getTodos());
+}
+
+// проверка 
+console.log('Мои списки: ', todoApp.getListNames());

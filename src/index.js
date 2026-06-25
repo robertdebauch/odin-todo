@@ -17,14 +17,20 @@ myGlobalTodoList.addTodo(task_2);
 myGlobalTodoList.addTodo(task_3);
 myGlobalTodoList.addTodo(task_4);
 
+// проверяем работу конкретных задач
 console.log(task_1.checkStatus());
 task_1.toggleStatus();
 console.log(task_1.checkStatus());
-
 console.log(task_1.id);
 
+// проверяем как удаляется
 console.log(myGlobalTodoList.getTodos());
-
 myGlobalTodoList.removeTodo(task_4.id);
-
 console.log(myGlobalTodoList.getTodos());
+
+// проверяем переключение
+console.log(task_2.checkStatus());
+myGlobalTodoList.toggleTodo(task_2.id);
+console.log(task_2.checkStatus());
+myGlobalTodoList.toggleTodo(task_2.id);
+console.log(task_2.checkStatus());

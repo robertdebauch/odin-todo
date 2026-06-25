@@ -1,6 +1,10 @@
 // работа по конкретному списку задач
 export function createToDoList() {
     const todos = [];
+    
+    const todoTargetFinder = (todo, id) => {
+        return todo.id === id;
+    }
 
     return {
         // свойства позже (YAGNI)
@@ -13,11 +17,20 @@ export function createToDoList() {
         },
 
         removeTodo(id) {
-            const index = todos.findIndex(todo => todo.id === id);
+            const index = todos.findIndex(todo => todoTargetFinder(todo, id));
 
             if (index !== -1) {
-                const removedTodo = todos.splice(index, 1)[0];
+                todos.splice(index, 1); // простое удаление
             } 
         },
+
+        toggleTodo(id) {
+
+            const todo = todos.find(todo => todoTargetFinder(todo, id));
+
+            if (todo) {
+                todo.toggleStatus();
+            } 
+        }
     };
 }

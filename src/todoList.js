@@ -11,5 +11,13 @@ export function createToDoList() {
         getTodos() {
             return [...todos];
         },
+
+        removeTodo(id) {
+            const index = todos.findIndex(todo => todo.id === id);
+
+            if (index !== -1) {
+                const removedTodo = todos.splice(index, 1)[0];
+            } 
+        },
     };
 }

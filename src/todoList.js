@@ -4,15 +4,15 @@ import { createToDoItem } from "./todo.js";
 export function createToDoList() {
     const todos = [];
     
-    const todoTargetFinder = (todo, id) => {
-        return todo.id === id;
-    }
-
+    const todoTargetFinder = (todo, id) => todo.id === id;
+    
     return {
         // свойства позже (YAGNI)
         addTodo(title) {
             const newTodo = createToDoItem(title);
             todos.push(newTodo);
+
+            return newTodo;
         },
 
         getTodos() {

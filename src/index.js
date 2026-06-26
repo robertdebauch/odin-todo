@@ -4,32 +4,22 @@ import { createApp } from "./app.js";
 // создаём конкретно приложение
 const todoApp = createApp();
 
-// создаём список
-todoApp.createList('Список дел');
+// затем создаём список задач
+todoApp.createTodoList('Список дел');
 
-// тест с переменной для хранения
-const currentTasksList = todoApp.getList('Список дел'); // дословная проверка
+// добавляем задачу
+const newTodo = todoApp.addTodoToList('Список дел', 'Проверить этот код');
+console.log(newTodo);
 
-// пока хард-код проверка
-if (currentTasksList) {
-    currentTasksList.addTodo('Создать модули');
-    currentTasksList.addTodo('Настроить логистику');
-    currentTasksList.addTodo('Не застрять в рекурсии');
+// проверяем всё остальное: id, связи
+if (newTodo) {
+    const idValue = newTodo.id;
+    console.log(`Всё хорошо, задача создана. Её ID: ${idValue}`);
 
-    let currentTasks = currentTasksList.getTodos();
-    console.log('1 : Добавили:', currentTasks);
+    // проверка того, срабатывает ли ID
+    todoApp.toggleTodoInList('Список дел', idValue);
 
-    const currentTaskId = currentTasks[0].id; // чтобы сохранить id для теста
-
-    // меняем статус выполнения (тест опять же)
-    console.log('2 : Статус до смены: ', currentTasks[0].checkStatus());
-    currentTasksList.toggleTodo(currentTaskId);
-    console.log('3 : Статус ПОСЛЕ смены: ', currentTasks[0].checkStatus());
-
-    // удаляем в тестовом режиме
-    currentTasksList.removeTodo(currentTaskId);
-    console.log('4 : Удаляем и ожидаем 2 дела вместо 3: ', currentTasksList.getTodos());
+    // выносим наружу, чтобы проверить в консоли
+    const todoListExtract = todoApp.getTodoList('Список дел');
+    console.log('Проверяем задачи в списке: ', todoListExtract.getTodos());
 }
-
-// проверка 
-console.log('Мои списки: ', todoApp.getListNames());

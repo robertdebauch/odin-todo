@@ -4,22 +4,50 @@ export function createApp() {
     // создаём объект для хранения списков задач
     const todoLists = {};
 
+    // вынес функцию из объекта наверх
+    function getTodoList(title) {
+        return todoLists[title] || null;
+    };
+
+
     return {
+        // забираем полученный список с собой
+        getTodoList,
+
         // создаём список
-        createList(title) {
-            // опять нарушение ООП?
+        createTodoList(title) {
+            
             if (!todoLists[title]) {
-                todoLists[title] = createToDoList();
+               return todoLists[title] = createToDoList();
             }
         },
 
-        // получаем список по его title
-        getList(title) {
-            return todoLists[title] || null;
+        addTodoToList(todoListTitle, todoTitle) {
+            const todoList = getTodoList(todoListTitle);
+            if (todoList) {
+                return todoList.addTodo(todoTitle);
+            } else {
+                console.log(`Список ${todoListTitle} НЕ НАЙДЕН`);
+                return null;
+            }
+        },
+
+        toggleTodoInList(todoListTitle, todoID) {
+            const todoList = getTodoList(todoListTitle);
+            if (todoList) {
+                todoList.toggleTodo(todoID);
+            }
+        },
+
+        removeTodoFromList(todoListTitle, todoID) {
+            const todoList = getTodoList(todoListTitle);
+            if (todoList) {
+                todoList.removeTodo(todoID);
+            }
         },
 
         // метод просмотра названий списков
-        getListNames() {
+        getTodoListNames() {
             return Object.keys(todoLists);
         }
     }

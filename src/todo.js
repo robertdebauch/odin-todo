@@ -1,21 +1,59 @@
+import { createChecklistItem } from "./checkbox.js";
+
 // тестовая фабрика
-export function createToDoItem(title) {
-    
+export function createToDoItem(fields) {
+
     const id = crypto.randomUUID();
     let completed = false;
 
+    const todoData = {
+        title: fields.title,
+        description: fields.description || "",
+        priority:  fields.priority || false,
+        dueDate:  fields.dueDate || "Too late!",
+        notes: fields.notes || "",
+        completed: false,
+        checklist: [],
+    }
+
     return {
-        id, 
-        title,
-        // это ещё не все свойства! пока YAGNI-принцип советует НЕ грузить код
+        id,
+
+        getTodoData() {
+            return { ...todoData };
+        },
+
+        update(newFields) {
+            Object.assign(todoData, newFields);
+        },
 
         checkStatus() {
-            return completed;
+            return todoData.completed;
         },
 
         toggleStatus() {
-            completed = !completed;
+            todoData.completed = !todoData.completed;
         },
+
+        addCheckbox(text) {
+            const newCheckbox = createChecklistItem(text);
+        
+            todoData.checklist.push(newCheckbox);
+        },
+
+        removeCheckbox(checkboxID) {
+            todoData.checklist = todoData.checklist.filter(item => item.id !== checkboxID);
+        },
+
+        fillCheckbox(checkboxID) {
+            const checkbox = todoData.checklist.find(item => item.id === checkboxID);
+
+            if(checkbox) {
+                checkbox.checked = !checkbox.checked;
+            }
+        }
+
+
     };
 }
 

@@ -3,11 +3,12 @@ import { createToDoItem } from "./todo.js";
 // работа по конкретному списку задач
 export function createToDoList() {
     const todos = [];
-    
+    const id = crypto.randomUUID();
     const todoTargetFinder = (todo, id) => todo.id === id;
     
     return {
-        // свойства позже (YAGNI)
+        id, 
+        
         addTodo(title) {
             const newTodo = createToDoItem(title);
             todos.push(newTodo);

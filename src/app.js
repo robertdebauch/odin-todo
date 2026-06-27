@@ -23,7 +23,7 @@ export function createApp() {
         },
 
         addTodoToList(todoListTitle, todoTitle) {
-            const todoList = getTodoList(todoListTitle);
+            const todoList = getTodoList(todoListTitle); 
             if (todoList) {
                 return todoList.addTodo(todoTitle);
             } else {
@@ -33,14 +33,14 @@ export function createApp() {
         },
 
         toggleTodoInList(todoListTitle, todoID) {
-            const todoList = getTodoList(todoListTitle);
+            const todoList = getTodoList(todoListTitle); // повтор 
             if (todoList) {
                 todoList.toggleTodo(todoID);
             }
         },
 
         removeTodoFromList(todoListTitle, todoID) {
-            const todoList = getTodoList(todoListTitle);
+            const todoList = getTodoList(todoListTitle); // повтор 
             if (todoList) {
                 todoList.removeTodo(todoID);
             }

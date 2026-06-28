@@ -5,49 +5,31 @@ import { createApp } from "./app.js";
 const todoApp = createApp();
 
 // затем создаём список задач
-todoApp.createTodoList('Список дел');
+const testTodoList = todoApp.createTodoList('Список дел');
+const todoListID = testTodoList.id;
 
-// добавляем задачу
-const newTodo = todoApp.addTodoToList('Список дел', {
-    title: 'проверить работу нового todo',
-    description: 'теперь используется блок параметров для нужных свойств',
-    priority: true,
-    notes: 'делаю заметки, делаю пометки'
-});
+console.log(`Создали список задач с ID: ${todoListID}`);
 
-console.log(newTodo);
 
-// проверяем всё остальное: id, связи
+const newTodo = todoApp.addTodoToList(
+    todoListID,
+    {
+        title: "Придумать название задачи",
+        description: "Подробное описание задачи? Нет, лучше кратко и по делу?",
+        priority: true,
+        notes: "В пометках я пишу что-то, о чем решил не писать в описании?",
+    }
+);
+
 if (newTodo) {
-    console.log('До обновления данные такие: ', newTodo.getTodoData());
+    const todoID = newTodo.id;
 
-    // проверка чекбокса
-    newTodo.addCheckbox('Ошибок в консоли нет?');
-    newTodo.addCheckbox('Задачу видно?');
+    console.log(`Добавили задачу с ID: ${todoID}`);
 
-    // проверка того, появились ли чекбоксы
-    let currentItemData = newTodo.getTodoData();
-    console.log('В наличии два чекбокса?', JSON.parse(JSON.stringify(currentItemData.checklist)));
+    newTodo.addCheckbox('Проверить, работает новая структура кода');
+    console.log('Выводим всю информацию по задаче, включая чексбокс: ', newTodo.getTodoData());
 
-    // отмечаем чекбокс
-    const firstCheckbox = currentItemData.checklist[0].id;
-    newTodo.fillCheckbox(firstCheckbox);
-
-    // обновляем данные
-    currentItemData = newTodo.getTodoData();
-    console.log('Первый чекбокс должен быть true, проверим:', currentItemData.checklist);
-
-    // удаляем чекбокс из задачи вообще
-    newTodo.removeCheckbox(firstCheckbox);
-    currentItemData = newTodo.getTodoData();
-    
-    console.log('Должен остаться только один чекбокс:', currentItemData.checklist);
-
-    newTodo.update({
-        description: 'если вижу этот текст, значит проверка прошла успешно',
-        notes: 'обновляю заметки, имитируя работу'
-    });
-    console.log('После обновления данных: ', newTodo.getTodoData());
+    todoApp.toggleTodoInList(todoListID, todoID);
 }
 
-
+console.log('Глобальная проверка списка в приложении: ', todoApp.getTodoListNames());

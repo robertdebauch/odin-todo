@@ -2,11 +2,14 @@ import { createToDoList } from "./todoList.js";
 
 export function createApp() {
     // создаём объект для хранения списков задач
-    const todoLists = {};
+    // const todoLists = {};
+    
+    // создаём массив для хранения объектов
+    const todoLists = [];
 
     // вынес функцию из объекта наверх
-    function getTodoList(title) {
-        return todoLists[title] || null;
+    function getTodoList(todoListID) {
+        return todoLists.find(todoList => todoList.id === todoListID) || null;
     };
 
 
@@ -16,39 +19,42 @@ export function createApp() {
 
         // создаём список
         createTodoList(title) {
-            
-            if (!todoLists[title]) {
-               return todoLists[title] = createToDoList();
-            }
+
+            const newTodoList = createToDoList(title);
+
+            todoLists.push(newTodoList);
+
+            return newTodoList;
+
         },
 
-        addTodoToList(todoListTitle, todoTitle) {
-            const todoList = getTodoList(todoListTitle); 
+        addTodoToList(todoListID, todoFields) {
+            const todoList = getTodoList(todoListID); 
             if (todoList) {
-                return todoList.addTodo(todoTitle);
+                return todoList.addTodo(todoFields);
             } else {
-                console.log(`Список ${todoListTitle} НЕ НАЙДЕН`);
+                console.log(`Список с ID ${todoListID} НЕ НАЙДЕН`);
                 return null;
             }
         },
 
-        toggleTodoInList(todoListTitle, todoID) {
-            const todoList = getTodoList(todoListTitle); // повтор 
+        toggleTodoInList(todoListID, todoID) {
+            const todoList = getTodoList(todoListID); // повтор 
             if (todoList) {
                 todoList.toggleTodo(todoID);
             }
         },
 
-        removeTodoFromList(todoListTitle, todoID) {
-            const todoList = getTodoList(todoListTitle); // повтор 
+        removeTodoFromList(todoListID, todoID) {
+            const todoList = getTodoList(todoListID); // повтор 
             if (todoList) {
                 todoList.removeTodo(todoID);
             }
         },
 
-        // метод просмотра названий списков
+        // метод map для получения названий списков
         getTodoListNames() {
-            return Object.keys(todoLists);
+            return todoLists.map(todoList => todoList.title);
         }
     }
 }

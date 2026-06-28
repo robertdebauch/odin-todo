@@ -4,7 +4,6 @@ import { createChecklistItem } from "./checkbox.js";
 export function createToDoItem(fields) {
 
     const id = crypto.randomUUID();
-    let completed = false;
 
     const todoData = {
         title: fields.title,

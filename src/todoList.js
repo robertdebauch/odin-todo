@@ -22,7 +22,7 @@ export function createToDoList(title) {
         },
 
         removeTodo(id) {
-            const index = todos.findIndex(todo => todoTargetFinder(todo, id));
+            const index = todos.findIndex(item => todoTargetFinder(item, id));
 
             if (index !== -1) {
                 todos.splice(index, 1); // простое удаление
@@ -30,11 +30,10 @@ export function createToDoList(title) {
         },
 
         toggleTodo(id) {
+            const foundTodo = todos.find(item => todoTargetFinder(item, id));
 
-            const todo = todos.find(todo => todoTargetFinder(todo, id));
-
-            if (todo) {
-                todo.toggleStatus();
+            if (foundTodo) {
+                foundTodo.toggleStatus();
             } 
         }
     };

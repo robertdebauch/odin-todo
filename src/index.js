@@ -15,9 +15,11 @@ const newTodo = todoApp.addTodoToList(
     todoListID,
     {
         title: "Придумать название задачи",
-        description: "Подробное описание задачи? Нет, лучше кратко и по делу?",
+        definition: "Подробное описание задачи? Нет, лучше кратко и по делу?",
         priority: true,
         notes: "В пометках я пишу что-то, о чем решил не писать в описании?",
+        dueDate: '2026-07-05',
+        deadline: '2026-07-03'
     }
 );
 
@@ -33,3 +35,15 @@ if (newTodo) {
 }
 
 console.log('Глобальная проверка списка в приложении: ', todoApp.getTodoListNames());
+
+const badTodo = todoApp.addTodoToList(
+    todoListID,
+    {
+        title: " ",
+        definition: "Я это не увижу, если ошибка сработает",
+    }
+);
+
+if (badTodo) {
+    console.log(badTodo.getTodoData());
+}

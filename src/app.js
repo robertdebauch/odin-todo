@@ -1,9 +1,6 @@
 import { createToDoList } from "./todoList.js";
 
 export function createApp() {
-    // создаём объект для хранения списков задач
-    // const todoLists = {};
-    
     // создаём массив для хранения объектов
     const todoLists = [];
 

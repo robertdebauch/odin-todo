@@ -1,15 +1,30 @@
 import { createChecklistItem } from "./checkbox.js";
+import { parseISO } from 'date-fns';
 
-// тестовая фабрика
 export function createToDoItem(fields) {
+
+    if (!fields || !fields.title || fields.title.trim() === "") {
+        throw new Error("Unable to create ToDo: field 'title' is required and MUST not be empty");
+    }
 
     const id = crypto.randomUUID();
 
+    let parsedDueDate = null;
+    if (fields.dueDate) {
+        parsedDueDate = parseISO(fields.dueDate);
+    }
+
+    let parsedDeadline = null;
+    if (fields.deadline) {
+        parsedDeadline = parseISO(fields.deadline);
+    }
+
     const todoData = {
-        title: fields.title,
-        description: fields.description || "",
+        title: fields.title.trim(),
+        definition: fields.definition || "",
         priority:  fields.priority || false,
-        dueDate:  fields.dueDate || "Too late!",
+        dueDate:  parsedDueDate,
+        deadline: parsedDeadline,
         notes: fields.notes || "",
         completed: false,
         checklist: [],

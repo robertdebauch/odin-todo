@@ -1,20 +1,29 @@
 import { createToDoList } from "./todoList.js";
 
 export function createApp() {
-    // создаём массив для хранения объектов
     const todoLists = [];
 
-    // вынес функцию из объекта наверх
+    const todoListTargetFinder = (todoList, id) => todoList.id === id;
+
     function getTodoList(todoListID) {
         return todoLists.find(todoList => todoList.id === todoListID) || null;
     };
 
+    function executeWithTodoList(todoListID, execution) {
+        const todoList = getTodoList(todoListID);
+
+        if (todoList) {
+            return execution(todoList);
+        } else {
+            console.log(`Список с ID ${todoListID} НЕ НАЙДЕН`);
+            return null;
+        }
+    }
+
 
     return {
-        // забираем полученный список с собой
         getTodoList,
 
-        // создаём список
         createTodoList(title) {
 
             const newTodoList = createToDoList(title);
@@ -25,33 +34,54 @@ export function createApp() {
 
         },
 
-        addTodoToList(todoListID, todoFields) {
-            const todoList = getTodoList(todoListID); 
-            if (todoList) {
-                return todoList.addTodo(todoFields);
-            } else {
-                console.log(`Список с ID ${todoListID} НЕ НАЙДЕН`);
-                return null;
+        removeTodoList(todoListID) {
+            const index = todoLists.findIndex(item => todoListTargetFinder(item, todoListID));
+
+            if (index !== -1) {
+                todoLists.splice(index, 1);
             }
+        },
+
+        addTodoToList(todoListID, todoFields) {
+            return executeWithTodoList(todoListID, function (todoList) {
+                return todoList.addTodo(todoFields);
+            });
+        },
+
+        updateTodoListTitle(todoListID, newTitle) {
+            executeWithTodoList(todoListID, function (todoList) {
+                return todoList.updateTitle(newTitle);
+            });
         },
 
         toggleTodoInList(todoListID, todoID) {
-            const todoList = getTodoList(todoListID); // повтор 
-            if (todoList) {
+            executeWithTodoList(todoListID, function (todoList) {
                 todoList.toggleTodo(todoID);
-            }
+            });
         },
 
         removeTodoFromList(todoListID, todoID) {
-            const todoList = getTodoList(todoListID); // повтор 
-            if (todoList) {
+            executeWithTodoList(todoListID, function (todoList) {
                 todoList.removeTodo(todoID);
-            }
+            });
         },
 
-        // метод map для получения названий списков
-        getTodoListNames() {
-            return todoLists.map(todoList => todoList.title);
+        getTodoListFields() {
+            return todoLists.map(todoList => {
+                return {
+                    id: todoList.id,
+                    title: todoList.getTitle()
+                };
+            });
+        },
+
+        getTodoListFieldsByID(todoListID) {
+            return executeWithTodoList(todoListID, function (todoList) {
+                return {
+                    id: todoList.id,
+                    title: todoList.getTitle()
+                };
+            });
         }
     }
 }

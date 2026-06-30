@@ -14,17 +14,12 @@ export function createToDoItem(fields) {
         parsedDueDate = parseISO(fields.dueDate);
     }
 
-    let parsedDeadline = null;
-    if (fields.deadline) {
-        parsedDeadline = parseISO(fields.deadline);
-    }
 
     const todoData = {
         title: fields.title.trim(),
         definition: fields.definition || "",
         priority:  fields.priority || false,
         dueDate:  parsedDueDate,
-        deadline: parsedDeadline,
         notes: fields.notes || "",
         completed: false,
         checklist: [],

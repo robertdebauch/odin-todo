@@ -1,14 +1,26 @@
 import { createToDoItem } from "./todo.js";
 
 // работа по конкретному списку задач
-export function createToDoList(title) {
+export function createToDoList(initialTitle) {
     const todos = [];
+    
     const id = crypto.randomUUID();
+    let currentTitle = initialTitle;
+    
     const todoTargetFinder = (todo, id) => todo.id === id;
     
     return {
         id, 
-        title,
+
+        getTitle() {
+            return currentTitle;
+        },
+
+        updateTitle(newTitle) {
+            if (newTitle && newTitle.trim() !== "") {
+                currentTitle = newTitle.trim();
+            }
+        },
         
         addTodo(fields) {
             const newTodo = createToDoItem(fields); // работает по всем полям
